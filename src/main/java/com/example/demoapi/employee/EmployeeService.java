@@ -1,5 +1,6 @@
 package com.example.demoapi.employee;
 
+import com.example.demoapi.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,12 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public EmployeeDto getEmployee(long id) throws Exception {
-        return this.employeeRepository.getEmployeeById(id)
-                .map(employee -> modelMapper.map(employee, EmployeeDto.class))
-                .orElseThrow(() -> new Exception("not found"));
+    public EmployeeDto getEmployee(long id) {
+        Employee employee = this.employeeRepository.getEmployeeById(id).orElseThrow(() -> new NotFoundException("employee not found"));
+        return modelMapper.map(employee, EmployeeDto.class);
+    }
+
+    public int saveEmployee(EmployeeDto employeeDto) {
+        return this.employeeRepository.saveEmployee(modelMapper.map(employeeDto, Employee.class));
     }
 }

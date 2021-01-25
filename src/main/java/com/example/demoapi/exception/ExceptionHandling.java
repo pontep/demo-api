@@ -10,8 +10,19 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ExceptionHandling {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleExceptions(Exception e) {
+        ExceptionResponse error = ExceptionResponse.builder()
+                .errorCode("INTERNAL_SERVER_ERROR")
+                .errorMsg(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleExceptions(NotFoundException e) {
+    public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(NotFoundException e) {
         ExceptionResponse error = ExceptionResponse.builder()
                 .errorCode("NOT_FOUND_ERROR")
                 .errorMsg(e.getMessage())

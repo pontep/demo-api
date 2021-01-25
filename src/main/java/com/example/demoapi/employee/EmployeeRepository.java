@@ -56,4 +56,16 @@ public class EmployeeRepository {
             return Optional.empty();
         }
     }
+
+    public int saveEmployee(Employee employee) {
+        String sql = "INSERT INTO TBL_EMPLOYEES (first_name, last_name, email) VALUES\n" +
+                "  (:firstName, :lastName, :email);";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("firstName", employee.getFirstName());
+        parameters.addValue("lastName", employee.getLastName());
+        parameters.addValue("email", employee.getEmail());
+
+        return this.namedParameterJdbcTemplate.update(sql, parameters);
+    }
 }
