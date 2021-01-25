@@ -1,6 +1,7 @@
 package com.example.demoapi.employee;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
