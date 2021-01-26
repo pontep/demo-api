@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,5 +68,43 @@ public class EmployeeRepository {
         parameters.addValue("email", employee.getEmail());
 
         return this.namedParameterJdbcTemplate.update(sql, parameters);
+    }
+
+    public int updateEmployee(Employee employee) {
+        String sql = "UPDATE TBL_EMPLOYEES SET first_name = :firstName, last_name = :lastName, email = :email\n" +
+                "  WHERE ID = :id;";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("id", employee.getId());
+        parameters.addValue("firstName", employee.getFirstName());
+        parameters.addValue("lastName", employee.getLastName());
+        parameters.addValue("email", employee.getEmail());
+
+        return this.namedParameterJdbcTemplate.update(sql, parameters);
+    }
+
+    public int patchEmployee(Employee employee) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE TBL_EMPLOYEES SET ID = :id");
+
+        if (StringUtils.hasText(employee.getFirstName())) {
+            sql.append(", first_name = :firstName");
+            parameters.addValue("firstName", employee.getFirstName());
+        }
+        if (StringUtils.hasText(employee.getLastName())) {
+            sql.append(", last_name = :lastName");
+            parameters.addValue("lastName", employee.getLastName());
+        }
+        if (StringUtils.hasText(employee.getEmail())) {
+            sql.append(", email = :email");
+            parameters.addValue("email", employee.getEmail());
+        }
+
+        sql.append(" WHERE ID = :id;");
+        parameters.addValue("id", employee.getId());
+
+        return this.namedParameterJdbcTemplate.update(sql.toString(), parameters);
     }
 }

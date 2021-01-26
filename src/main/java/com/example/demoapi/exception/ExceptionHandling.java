@@ -24,12 +24,23 @@ public class ExceptionHandling {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(NotFoundException e) {
         ExceptionResponse error = ExceptionResponse.builder()
-                .errorCode("NOT_FOUND_ERROR")
+                .errorCode(e.getErrorCode())
                 .errorMsg(e.getMessage())
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleBadRequestExceptions(BadRequestException e) {
+        ExceptionResponse error = ExceptionResponse.builder()
+                .errorCode(e.getErrorCode())
+                .errorMsg(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
 }
