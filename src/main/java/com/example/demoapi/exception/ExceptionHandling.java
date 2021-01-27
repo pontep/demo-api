@@ -43,4 +43,15 @@ public class ExceptionHandling {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthenticationException(AuthenticationException e) {
+        ExceptionResponse error = ExceptionResponse.builder()
+                .errorCode(e.getErrorCode())
+                .errorMsg(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
 }

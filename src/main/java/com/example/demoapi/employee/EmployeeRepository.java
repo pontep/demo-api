@@ -20,7 +20,7 @@ public class EmployeeRepository {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public Collection<Employee> getEmployees() {
-        String sql = "SELECT * FROM TBL_EMPLOYEES";
+        String sql = "SELECT * FROM TBL_EMPLOYEES WHERE IS_DELETED = 'N'";
         return this.namedParameterJdbcTemplate.query(sql, new RowMapper<Employee>() {
             @Override
             public Employee mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -35,7 +35,7 @@ public class EmployeeRepository {
     }
 
     public Optional<Employee> getEmployeeById(long id) {
-        String sql = "SELECT * FROM TBL_EMPLOYEES WHERE ID = :id";
+        String sql = "SELECT * FROM TBL_EMPLOYEES WHERE ID = :id AND IS_DELETED = 'N';";
 
         try {
             MapSqlParameterSource parameters = new MapSqlParameterSource();
@@ -103,6 +103,16 @@ public class EmployeeRepository {
         }
 
         sql.append(" WHERE ID = :id;");
+        parameters.addValue("id", employee.getId());
+
+        return this.namedParameterJdbcTemplate.update(sql.toString(), parameters);
+    }
+
+    public int deleteEmployee(Employee employee) {
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE TBL_EMPLOYEES SET IS_DELETED = 'Y' WHERE ID = :id;");
         parameters.addValue("id", employee.getId());
 
         return this.namedParameterJdbcTemplate.update(sql.toString(), parameters);

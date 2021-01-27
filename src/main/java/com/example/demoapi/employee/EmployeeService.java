@@ -47,4 +47,13 @@ public class EmployeeService {
             throw new BadRequestException(ErrorCode.ERR_PATCH.code, "employee ID not found");
         }
     }
+
+    @Transactional
+    public void deleteEmployee(EmployeeDto employeeDto) {
+        if (this.employeeRepository.deleteEmployee(modelMapper.map(employeeDto, Employee.class)) == 0) {
+            throw new BadRequestException(ErrorCode.ERR_DELETE.code, "employee ID not found");
+        }
+    }
+
+
 }

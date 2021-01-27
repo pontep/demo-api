@@ -5,4 +5,15 @@ CREATE TABLE TBL_EMPLOYEES (
   first_name VARCHAR(250) NOT NULL,
   last_name VARCHAR(250) NOT NULL,
   email VARCHAR(250) DEFAULT NULL,
+  is_deleted VARCHAR(1) DEFAULT 'N'
 );
+
+CREATE TABLE TBL_USER_ACCOUNT (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    user_password VARCHAR(100) NOT NULL ,
+    display_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    login_failed_count NUMBER DEFAULT 0,
+    deactivated VARCHAR(1) DEFAULT 'N'
+)

@@ -48,4 +48,12 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeDto employeeDto) {
+        log.info("deleteEmployee employeeDto: {}", employeeDto);
+
+        this.employeeService.deleteEmployee(employeeDto);
+        return ResponseEntity.noContent().build();
+    }
+
 }
