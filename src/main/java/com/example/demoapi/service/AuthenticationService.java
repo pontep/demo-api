@@ -22,7 +22,7 @@ public class AuthenticationService {
     private final UserAccountRepository userAccountRepository;
     private final ModelMapper modelMapper;
 
-    @Transactional
+//    @Transactional
     public UserAccountDto loginWithUsernameAndPassword(LoginWithUsernameAndPasswordRequest request) {
         Optional<UserAccount> username = this.userAccountRepository.findUserAccountByUsername(request.getUsername());
         if (username.isPresent()) {
