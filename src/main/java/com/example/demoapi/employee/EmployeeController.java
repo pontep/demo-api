@@ -2,8 +2,11 @@ package com.example.demoapi.employee;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -15,9 +18,11 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<?> getEmployees() {
+        log.info("getEmployees");
         return ResponseEntity.ok(this.employeeService.getEmployees());
     }
 
+    @Cacheable()
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployee(@PathVariable long id) {
         log.info("getEmployee id: {}", id);
